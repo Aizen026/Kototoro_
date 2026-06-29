@@ -2179,7 +2179,7 @@
     <string name="anilist">AniList</string>
     <string name="aniyomi_available_extensions">Aniyomi 可用扩展</string>
     <string name="aniyomi_extension_repositories">Aniyomi 仓库</string>
-    <string name="app_name">Kototoro</string>
+    <string name="app_name">padoru</string>
     <string name="available_extension_count">%d 个可用</string>
     <string name="available_extension_update_count">%d 个更新</string>
     <string name="available_pattern">%1$s 可用</string>

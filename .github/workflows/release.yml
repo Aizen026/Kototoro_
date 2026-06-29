@@ -37,15 +37,12 @@ jobs:
         
         if [ -z "$PREVIOUS_TAG" ]; then
           echo "No previous tag found. Getting all logs."
-          CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          git log --pretty=format:"- %s (%h)" --no-merges > changelog.txt
         else
           echo "Getting logs between $PREVIOUS_TAG and $CURRENT_TAG"
-          CHANGELOG=$(git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG..$CURRENT_TAG" --no-merges)
+          git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG..$CURRENT_TAG" --no-merges > changelog.txt
         fi
         
-        echo "changelog<<EOF" >> $GITHUB_OUTPUT
-        echo "$CHANGELOG" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
         echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
     
     - name: Set up JDK
@@ -115,9 +112,9 @@ jobs:
           fi
           if [ "$abi" = "universal" ]; then
             # Keep legacy filename for compatibility with old update clients.
-            target="release/Kototoro-${{ steps.version.outputs.version_name }}-release.apk"
+            target="release/padoru-${{ steps.version.outputs.version_name }}-release.apk"
           else
-            target="release/Kototoro-${{ steps.version.outputs.version_name }}-${abi}-release.apk"
+            target="release/padoru-${{ steps.version.outputs.version_name }}-${abi}-release.apk"
           fi
           cp "$apk" "$target"
         done
@@ -128,7 +125,7 @@ jobs:
         tag_name: ${{ env.TAG_NAME }}
         files: |
           release/*.apk
-        body: ${{ steps.changelog.outputs.changelog }}
+        body_path: changelog.txt
         draft: false
         prerelease: false
       env:

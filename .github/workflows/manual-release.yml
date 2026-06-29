@@ -34,18 +34,19 @@ jobs:
         
         echo "Previous Tag: $PREVIOUS_TAG"
         
-        if [ -z "$PREVIOUS_TAG" ]; then
-          echo "No previous tag found. Getting all logs."
-          CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+        if [ -n "${{ inputs.release_notes }}" ]; then
+          echo "Using provided release notes."
+          echo "${{ inputs.release_notes }}" > changelog.txt
         else
-          echo "Getting logs between $PREVIOUS_TAG and HEAD"
-          CHANGELOG=$(git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG..HEAD" --no-merges)
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous tag found. Getting all logs."
+            git log --pretty=format:"- %s (%h)" --no-merges > changelog.txt
+          else
+            echo "Getting logs between $PREVIOUS_TAG and HEAD"
+            git log --pretty=format:"- %s (%h)" "$PREVIOUS_TAG..HEAD" --no-merges > changelog.txt
+          fi
         fi
         
-        # Escape for GITHUB_OUTPUT
-        echo "changelog<<EOF" >> $GITHUB_OUTPUT
-        echo "$CHANGELOG" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
         echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
     
     - name: Set up JDK
@@ -116,9 +117,9 @@ jobs:
           fi
           if [ "$abi" = "universal" ]; then
             # Keep legacy filename for compatibility with old update clients.
-            target="release/Kototoro-${{ steps.version.outputs.version_name }}-release.apk"
+            target="release/padoru-${{ steps.version.outputs.version_name }}-release.apk"
           else
-            target="release/Kototoro-${{ steps.version.outputs.version_name }}-${abi}-release.apk"
+            target="release/padoru-${{ steps.version.outputs.version_name }}-${abi}-release.apk"
           fi
           cp "$apk" "$target"
         done
@@ -127,10 +128,10 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ inputs.release_tag }}
-        name: Kototoro ${{ steps.version.outputs.version_name }}
+        name: padoru ${{ steps.version.outputs.version_name }}
         files: |
           release/*.apk
-        body: ${{ inputs.release_notes != '' && inputs.release_notes || steps.changelog.outputs.changelog }}
+        body_path: changelog.txt
         draft: false
         prerelease: false
       env:

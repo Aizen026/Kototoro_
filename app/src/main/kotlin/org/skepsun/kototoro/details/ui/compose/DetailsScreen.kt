@@ -931,6 +931,7 @@ fun DetailsScreen(
                                         )
                                     }
                                     DetailsOverflowMenu(
+                                        content = content,
                                         contentTitle = content?.title,
                                         showTranslateAction = showTranslateAction,
                                         hasTranslationCache = hasTranslationCache,
@@ -3199,6 +3200,7 @@ sealed interface DetailsAction {
     data object OpenLocalSourceInBrowser : DetailsAction
     data object OpenStatistics : DetailsAction
     data object OpenReadingRecord : DetailsAction
+    data object UpscaleLocalManga : DetailsAction
     data object ToggleSafe : DetailsAction
     data object ToggleList : DetailsAction
     data object ToggleGrid : DetailsAction
@@ -3935,6 +3937,7 @@ private fun resolveReadActionLabel(
 
 @Composable
 private fun DetailsOverflowMenu(
+    content: org.skepsun.kototoro.parsers.model.Content?,
     contentTitle: String?,
     showTranslateAction: Boolean,
     hasTranslationCache: Boolean,
@@ -4031,6 +4034,16 @@ private fun DetailsOverflowMenu(
                     onClick = {
                         expanded = false
                         onActionClick(DetailsAction.CreateShortcut)
+                    },
+                )
+            }
+
+            if (content?.source == org.skepsun.kototoro.core.model.LocalMangaSource) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.upscale_local_manga)) },
+                    onClick = {
+                        expanded = false
+                        onActionClick(DetailsAction.UpscaleLocalManga)
                     },
                 )
             }

@@ -1574,6 +1574,13 @@
     <string name="ai_api_usage_summary_local_first">Current translation mode is Local first. API settings are used only when local translation is unavailable or unsupported.</string>
     <string name="ai_api_usage_summary_api_only">Current translation mode is API only. Every translation request will use the configured remote provider.</string>
     <string name="ai_image_enhancement_settings">Image enhancement</string>
+    <string name="local_manga_upscale_settings">Local Manga Upscale</string>
+    <string name="upscale_engine">Upscale Engine</string>
+    <string name="upscale_model">Neural Model</string>
+    <string name="upscale_local_manga">Upscale Local Manga</string>
+    <string name="upscaling_local_manga">Upscaling local manga in background...</string>
+    <string name="upscale_local_manga_not_supported">Upscale is only supported for local CBZ/ZIP files</string>
+    <string name="upscale_finished">Upscale completed</string>
     <string name="ai_image_enhancement_summary">Configure reader-side AI super resolution and cache behavior</string>
     <string name="ai_image_enhancement_summary_enabled">Enabled, %1$s</string>
     <string name="ai_image_enhancement_summary_disabled">Disabled, %1$s</string>

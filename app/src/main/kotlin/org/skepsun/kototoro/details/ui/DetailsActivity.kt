@@ -200,6 +200,21 @@ class DetailsActivity :
             DetailsAction.Download -> Unit
             DetailsAction.OpenStatistics -> Unit
             DetailsAction.OpenReadingRecord -> Unit
+            DetailsAction.UpscaleLocalManga -> {
+                viewModel.getContentOrNull()?.let { content ->
+                    if (content.source == org.skepsun.kototoro.core.model.LocalMangaSource) {
+                        org.skepsun.kototoro.upscale.UpscaleWorker.enqueue(
+                            context = this,
+                            url = content.url,
+                            title = content.title
+                        )
+                        android.widget.Toast.makeText(this, R.string.upscaling_local_manga, android.widget.Toast.LENGTH_SHORT).show()
+                    } else {
+                        android.widget.Toast.makeText(this, R.string.upscale_local_manga_not_supported, android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
 
             DetailsAction.ToggleList,
             DetailsAction.ToggleGrid,

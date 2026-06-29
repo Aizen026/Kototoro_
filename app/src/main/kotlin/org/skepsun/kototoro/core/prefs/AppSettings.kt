@@ -1376,6 +1376,15 @@ class AppSettings @Inject constructor(@ApplicationContext private val context: C
 	val isReaderChapterToastEnabled: Boolean
 		get() = prefs.getBoolean(KEY_READER_CHAPTER_TOAST, true)
 
+
+	var upscaleEngine: String
+		get() = prefs.getString(KEY_UPSCALE_ENGINE, "NCNN") ?: "NCNN"
+		set(value) = prefs.edit { putString(KEY_UPSCALE_ENGINE, value) }
+
+	var upscaleNcnnModel: String
+		get() = prefs.getString(KEY_UPSCALE_NCNN_MODEL, "SE") ?: "SE"
+		set(value) = prefs.edit { putString(KEY_UPSCALE_NCNN_MODEL, value) }
+
 	var isReaderSuperResolutionEnabled: Boolean
 		get() = prefs.getBoolean(KEY_READER_SUPER_RESOLUTION_ENABLED, false)
 		set(value) = prefs.edit().putBoolean(KEY_READER_SUPER_RESOLUTION_ENABLED, value).apply()
@@ -2152,6 +2161,10 @@ class AppSettings @Inject constructor(@ApplicationContext private val context: C
 		const val KEY_READER_SUPER_RESOLUTION_ENGINE = "reader_super_resolution_engine"
 		const val KEY_READER_SUPER_RESOLUTION_ANIME4K_MODE = "reader_super_resolution_anime4k_mode"
 		const val KEY_READER_SUPER_RESOLUTION_MODEL = "reader_super_resolution_model"
+
+		const val KEY_UPSCALE_ENGINE = "upscale_engine"
+		const val KEY_UPSCALE_NCNN_MODEL = "upscale_ncnn_model"
+
 		const val KEY_READER_SUPER_RESOLUTION_NOISE_LEVEL = "reader_super_resolution_noise_level"
 		const val KEY_READER_SUPER_RESOLUTION_CACHE_LIMIT = "reader_super_resolution_cache_limit"
 		const val KEY_READER_BACKGROUND = "reader_background"

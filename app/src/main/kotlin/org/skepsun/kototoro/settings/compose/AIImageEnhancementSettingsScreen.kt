@@ -42,6 +42,33 @@ fun AIImageEnhancementSettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = SettingsContentHorizontalPadding, vertical = 20.dp),
         ) {
+
+            SettingsPreferenceSection(
+                title = stringResource(R.string.local_manga_upscale_settings),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                SettingsChoicePreference(
+                    title = stringResource(R.string.upscale_engine),
+                    options = stringArrayResource(R.array.reader_super_resolution_engines).mapIndexed { index, label ->
+                        SettingsChoiceOption(engineNames[index], label)
+                    }.filter { it.value == "NCNN" },
+                    value = settings.observeAsState(AppSettings.KEY_UPSCALE_ENGINE) {
+                        prefs.getString(AppSettings.KEY_UPSCALE_ENGINE, "NCNN") ?: "NCNN"
+                    }.value,
+                    onValueChange = { settings.prefs.edit { putString(AppSettings.KEY_UPSCALE_ENGINE, it) } },
+                )
+
+                SettingsSectionDivider()
+                SettingsChoicePreference(
+                    title = stringResource(R.string.upscale_model),
+                    options = ncnnModels,
+                    value = settings.observeAsState(AppSettings.KEY_UPSCALE_NCNN_MODEL) {
+                        prefs.getString(AppSettings.KEY_UPSCALE_NCNN_MODEL, "SE") ?: "SE"
+                    }.value,
+                    onValueChange = { settings.prefs.edit { putString(AppSettings.KEY_UPSCALE_NCNN_MODEL, it) } },
+                )
+            }
+
             SettingsPreferenceSection(
                 title = stringResource(R.string.ai_image_enhancement_settings),
                 modifier = Modifier.fillMaxWidth(),

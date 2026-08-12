@@ -1,8 +1,10 @@
 package org.skepsun.kototoro.core.network.proxy
 
+import android.content.Context
 import androidx.webkit.ProxyConfig
 import androidx.webkit.ProxyController
 import androidx.webkit.WebViewFeature
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -12,6 +14,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import okio.IOException
+import org.skepsun.kototoro.R
 import org.skepsun.kototoro.core.exceptions.ProxyConfigException
 import org.skepsun.kototoro.core.network.CommonHeaders
 import org.skepsun.kototoro.core.prefs.AppSettings
@@ -30,6 +33,7 @@ import java.net.Authenticator as JavaAuthenticator
 
 @Singleton
 class ProxyProvider @Inject constructor(
+	@ApplicationContext private val context: Context,
 	private val settings: AppSettings,
 ) {
 
@@ -58,7 +62,7 @@ class ProxyProvider @Inject constructor(
 		val isProxyEnabled = isProxyEnabled()
 		if (!WebViewFeature.isFeatureSupported(WebViewFeature.PROXY_OVERRIDE)) {
 			if (isProxyEnabled) {
-				throw IllegalArgumentException("Proxy for WebView is not supported") // TODO localize
+				throw IllegalArgumentException(context.getString(R.string.proxy_webview_not_supported))
 			}
 		} else {
 			val controller = ProxyController.getInstance()

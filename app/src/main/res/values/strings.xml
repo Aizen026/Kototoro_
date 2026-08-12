@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">padoru</string>
+    <string name="proxy_webview_not_supported">Proxy for WebView is not supported</string>
     <string name="quick_access">Quick access</string>
     <string name="home">Home</string>
     <string name="local_storage">Local storage</string>

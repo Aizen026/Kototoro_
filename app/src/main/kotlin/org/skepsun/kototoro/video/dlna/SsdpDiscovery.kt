@@ -5,6 +5,7 @@ import android.net.wifi.WifiManager
 import android.util.Log
 import android.util.Xml
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -83,9 +84,9 @@ object SsdpDiscovery {
 
             // Send M-SEARCH multiple times for reliability
             socket.send(sendPacket)
-            Thread.sleep(200)
+            delay(200)
             socket.send(sendPacket)
-            Thread.sleep(200)
+            delay(200)
             socket.send(sendPacket)
 
             Log.d(TAG, "Sent SSDP M-SEARCH on port ${socket.localPort}")

@@ -63,7 +63,7 @@ class TtsManager(
             prefs.getString("tts_system_voice", "default") ?: "default"
         }
         speed = 1.0f // TODO: read from settings when implemented
-        pitch = 1.0f // TODO: read from settings when implemented
+        pitch = prefs.getFloat("tts_pitch", 1.0f)
     }
 
     companion object {

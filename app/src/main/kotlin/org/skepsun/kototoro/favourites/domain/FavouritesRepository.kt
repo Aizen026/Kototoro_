@@ -362,11 +362,10 @@ class FavouritesRepository @Inject constructor(
 	}
 
 	suspend fun removeCategories(ids: Collection<Long>) {
+		if (ids.isEmpty()) return
 		db.withTransaction {
-			for (id in ids) {
-				db.getWorkFavouritesDao().deleteAll(id)
-				db.getFavouriteCategoriesDao().delete(id)
-			}
+			db.getWorkFavouritesDao().deleteAll(ids)
+			db.getFavouriteCategoriesDao().delete(ids)
 			db.getChaptersDao().gc()
 		}
 	}

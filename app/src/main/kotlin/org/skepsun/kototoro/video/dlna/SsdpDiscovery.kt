@@ -5,6 +5,8 @@ import android.net.wifi.WifiManager
 import android.util.Log
 import android.util.Xml
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -119,14 +121,11 @@ object SsdpDiscovery {
 
         Log.d(TAG, "SSDP found ${locations.size} locations: $locations")
 
-        val devices = mutableListOf<DlnaDevice>()
-        for (location in locations) {
-            val device = fetchDeviceDescription(client, location)
-            if (device != null) {
-                devices.add(device)
+        locations.map { location ->
+            async {
+                fetchDeviceDescription(client, location)
             }
-        }
-        devices
+        }.awaitAll().filterNotNull()
     }
 
     /**

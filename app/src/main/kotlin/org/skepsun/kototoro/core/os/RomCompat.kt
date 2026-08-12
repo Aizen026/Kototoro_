@@ -12,7 +12,7 @@ object RomCompat {
 	}
 
 	@Blocking
-	private fun getProp(propName: String) = Runtime.getRuntime().exec("getprop $propName").inputStream.use {
+	private fun getProp(propName: String) = Runtime.getRuntime().exec(arrayOf("getprop", propName)).inputStream.use {
 		it.reader().use(InputStreamReader::readText).trim()
 	}
 }

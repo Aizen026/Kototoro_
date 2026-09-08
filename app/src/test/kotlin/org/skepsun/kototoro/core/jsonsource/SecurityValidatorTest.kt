@@ -126,6 +126,13 @@ class SecurityValidatorTest {
 		assertTrue(result.errors.isNotEmpty())
 	}
 	
+	@Test
+	fun `validateUrl rejects url triggering URISyntaxException`() {
+		val result = SecurityValidator.validateUrl("http://example.com/invalid space")
+		assertFalse(result.isValid)
+		assertTrue(result.errors.any { it.contains("Invalid URL format") })
+	}
+
 	// ========== Regex Validation Tests ==========
 	
 	@Test

@@ -10,10 +10,15 @@ import org.skepsun.kototoro.history.data.HistoryEntity
 class MihonBackupExportMapperTest {
 
     @Test
-    fun `source id parser only accepts mihon sources`() {
+    fun `source id parser only accepts valid mihon sources`() {
         assertEquals(123456789L, MihonBackupExportMapper.sourceIdOrNull("MIHON_123456789"))
+
+        assertNull(MihonBackupExportMapper.sourceIdOrNull(""))
         assertNull(MihonBackupExportMapper.sourceIdOrNull("COPYMANGA"))
+        assertNull(MihonBackupExportMapper.sourceIdOrNull("PREFIX_123456789"))
+        assertNull(MihonBackupExportMapper.sourceIdOrNull("MIHON_"))
         assertNull(MihonBackupExportMapper.sourceIdOrNull("MIHON_invalid"))
+        assertNull(MihonBackupExportMapper.sourceIdOrNull("MIHON_123456789a"))
     }
 
     @Test

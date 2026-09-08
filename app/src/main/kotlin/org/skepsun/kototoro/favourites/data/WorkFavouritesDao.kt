@@ -109,6 +109,9 @@ abstract class WorkFavouritesDao {
 	@Query("UPDATE work_favourites SET deleted_at = :deletedAt, updated_at = :updatedAt WHERE category_id = :categoryId AND deleted_at = 0")
 	abstract suspend fun setDeletedAtAll(categoryId: Long, deletedAt: Long, updatedAt: Long)
 
+	@Query("UPDATE work_favourites SET deleted_at = :deletedAt, updated_at = :updatedAt WHERE category_id IN (:categoryIds) AND deleted_at = 0")
+	abstract suspend fun setDeletedAtAll(categoryIds: Collection<Long>, deletedAt: Long, updatedAt: Long)
+
 	@Query(
 		"""
 		UPDATE work_favourites
@@ -207,6 +210,12 @@ abstract class WorkFavouritesDao {
 	suspend fun deleteAll(categoryId: Long) {
 		val currentTime = System.currentTimeMillis()
 		setDeletedAtAll(categoryId = categoryId, deletedAt = currentTime, updatedAt = currentTime)
+	}
+
+	suspend fun deleteAll(categoryIds: Collection<Long>) {
+		if (categoryIds.isEmpty()) return
+		val currentTime = System.currentTimeMillis()
+		setDeletedAtAll(categoryIds = categoryIds, deletedAt = currentTime, updatedAt = currentTime)
 	}
 
 	suspend fun recover(entityId: Long) {
